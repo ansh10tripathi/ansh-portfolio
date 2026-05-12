@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 /** Full-screen loading screen shown only on first visit */
 export function LoadingScreen() {
@@ -15,7 +16,6 @@ export function LoadingScreen() {
     setShow(true);
     sessionStorage.setItem('portfolio_loaded', 'true');
 
-    // Animate progress
     const interval = setInterval(() => {
       setProgress((p) => {
         if (p >= 100) {
@@ -38,33 +38,33 @@ export function LoadingScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* SVG Monogram */}
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="mb-8">
-            <motion.path
-              d="M10 70 L30 10 L40 40 L50 10 L70 70"
-              stroke="url(#grad)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.5, ease: 'easeInOut' }}
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-6"
+            style={{
+              filter:
+                'drop-shadow(0 0 24px rgba(0,245,255,0.6)) drop-shadow(0 0 60px rgba(124,58,237,0.35))',
+            }}
+          >
+            <Image
+              src="/images/Logo.png"
+              alt="Ansh Tripathi"
+              width={80}
+              height={80}
+              priority
+              style={{ width: 80, height: 80, objectFit: 'contain' }}
             />
-            <defs>
-              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00F5FF" />
-                <stop offset="100%" stopColor="#7C3AED" />
-              </linearGradient>
-            </defs>
-          </svg>
+          </motion.div>
 
           {/* Name */}
           <motion.p
             className="font-syne text-lg font-bold text-[var(--text-primary)] mb-6 tracking-widest"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.4 }}
           >
             ANSH TRIPATHI
           </motion.p>

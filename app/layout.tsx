@@ -34,28 +34,58 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
   description:
-    'Portfolio of Ansh Tripathi, B.Tech CSE (AI/ML) at LPU. Building ML systems, real-time applications, and modern web experiences. Open to collaborations and opportunities.',
+    'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
   keywords: [
     'AI Engineer', 'ML Engineer', 'Full Stack Developer', 'React Developer',
-    'Python', 'Machine Learning', 'LPU', 'Ansh Tripathi',
+    'Python', 'Machine Learning', 'LPU', 'Ansh Tripathi', 'Portfolio',
   ],
   authors: [{ name: 'Ansh Tripathi', url: 'https://github.com/ansh10tripathi' }],
   creator: 'Ansh Tripathi',
+  icons: {
+    icon: '/images/Logo.png',
+    apple: '/images/Logo.png',
+    shortcut: '/images/Logo.png',
+  },
+  // theme-color for browser chrome on mobile
+  other: {
+    'theme-color': '#050508',
+    'color-scheme': 'dark light',
+    'msapplication-TileColor': '#050508',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: 'https://anshtripathi.dev',
-    title: 'Ansh Tripathi — AI/ML Engineer',
-    description: 'Building at the intersection of ML, systems, and modern web.',
-    images: [{ url: '/images/og-image.png', width: 1200, height: 630 }],
+    siteName: 'Ansh Tripathi Portfolio',
+    title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
+    description:
+      'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
+    images: [
+      {
+        // Absolute URL required — social crawlers cannot resolve relative paths
+        url: 'https://anshtripathi.dev/images/og-image.png',
+        secureUrl: 'https://anshtripathi.dev/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ansh Tripathi — AI/ML Engineer',
-    description: 'Building ML systems and modern web at LPU.',
-    images: ['/images/og-image.png'],
+    site: '@ansh10tripathi',
+    creator: '@ansh10tripathi',
+    title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
+    description:
+      'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
+    images: ['https://anshtripathi.dev/images/og-image.png'],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
   metadataBase: new URL('https://anshtripathi.dev'),
 };
 
