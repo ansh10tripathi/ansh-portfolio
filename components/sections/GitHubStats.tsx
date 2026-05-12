@@ -3,17 +3,41 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Star, GitFork, ExternalLink } from 'lucide-react';
+import { Star, GitFork, ExternalLink, Package, Users } from 'lucide-react';
 import { fadeUp, staggerContainer } from '@/lib/animations';
 import { GITHUB_FALLBACK, LANGUAGE_COLORS } from '@/lib/constants';
 import type { GitHubStats } from '@/types';
 import { CounterAnim } from '@/components/ui/CounterAnim';
 
 const STAT_CARDS = (stats: GitHubStats | null) => [
-  { label: 'Public Repos', value: stats?.user?.public_repos ?? GITHUB_FALLBACK.publicRepos, icon: '📦' },
-  { label: 'Total Stars', value: stats?.totalStars ?? GITHUB_FALLBACK.totalStars, icon: '⭐' },
-  { label: 'Total Forks', value: stats?.totalForks ?? GITHUB_FALLBACK.totalForks, icon: '🍴' },
-  { label: 'Followers', value: stats?.user?.followers ?? GITHUB_FALLBACK.followers, icon: '👥' },
+  {
+    label: 'Public Repos',
+    value: stats?.user?.public_repos ?? GITHUB_FALLBACK.publicRepos,
+    icon: Package,
+    color: '#00F5FF',
+    glow: 'rgba(0,245,255,0.5)',
+  },
+  {
+    label: 'Total Stars',
+    value: stats?.totalStars ?? GITHUB_FALLBACK.totalStars,
+    icon: Star,
+    color: '#F59E0B',
+    glow: 'rgba(245,158,11,0.5)',
+  },
+  {
+    label: 'Total Forks',
+    value: stats?.totalForks ?? GITHUB_FALLBACK.totalForks,
+    icon: GitFork,
+    color: '#7C3AED',
+    glow: 'rgba(124,58,237,0.5)',
+  },
+  {
+    label: 'Followers',
+    value: stats?.user?.followers ?? GITHUB_FALLBACK.followers,
+    icon: Users,
+    color: '#00F5FF',
+    glow: 'rgba(0,245,255,0.5)',
+  },
 ];
 
 /** Returns true only when the API response is a valid GitHubStats shape */
@@ -69,14 +93,21 @@ export function GitHubStats() {
             <motion.div
               key={card.label}
               variants={fadeUp}
-              className="rounded-2xl p-6 text-center"
+              className="group/card rounded-2xl p-6 text-center"
               style={{
                 background: 'rgba(0,245,255,0.03)',
                 border: '1px solid rgba(0,245,255,0.1)',
+                ['--glow' as string]: card.glow,
               }}
               whileHover={{ borderColor: 'rgba(0,245,255,0.3)', y: -2 }}
             >
-              <div className="text-3xl mb-2">{card.icon}</div>
+              <div className="mb-3 flex justify-center">
+                <card.icon
+                  size={32}
+                  style={{ color: card.color }}
+                  className="transition-all duration-300 group-hover/card:drop-shadow-[0_0_8px_var(--glow)]"
+                />
+              </div>
               <div className="font-syne font-bold text-3xl gradient-text">
                 {loading ? (
                   <div className="h-8 w-12 mx-auto rounded bg-white/10 animate-pulse" />
