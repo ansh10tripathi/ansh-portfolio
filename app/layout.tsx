@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Syne, DM_Sans, JetBrains_Mono, Outfit } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { CursorTrail } from '@/components/ui/CursorTrail';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import './globals.css';
 
 const syne = Syne({
@@ -118,6 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-dm antialiased">
         <ThemeProvider>
+          <ScrollProgress />
           <CursorTrail />
           {children}
         </ThemeProvider>
