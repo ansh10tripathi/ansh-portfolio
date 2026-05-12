@@ -89,3 +89,15 @@ export interface NavItem {
   label: string;
   href: string;
 }
+
+export interface TimelineEntry {
+  year: string;
+  title: string;
+  subtitle: string;
+  org: string;
+  date: string;
+  type: 'Education' | 'Project' | 'Achievement' | 'Certification' | 'Activity' | 'Competition';
+  description: string;
+  icon: string;
+  color: string;
+}

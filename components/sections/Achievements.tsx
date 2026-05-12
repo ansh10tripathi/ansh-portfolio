@@ -10,7 +10,7 @@ export function Achievements() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section id="achievements" className="section-padding relative">
+    <section id="achievements" className="relative" style={{ padding: '5rem 0 6rem' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
