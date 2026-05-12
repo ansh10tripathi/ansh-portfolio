@@ -19,21 +19,20 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = NAV_ITEMS.map((item) => item.href.replace('#', ''));
-    const observers: IntersectionObserver[] = [];
-
-    sections.forEach((id) => {
+    const ids = NAV_ITEMS.map((item) => item.href.replace('#', ''));
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    ids.forEach((id) => {
       const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { threshold: 0.4 }
-      );
-      obs.observe(el);
-      observers.push(obs);
+      if (el) obs.observe(el);
     });
-
-    return () => observers.forEach((o) => o.disconnect());
+    return () => obs.disconnect();
   }, []);
 
   const scrollTo = (href: string) => {
@@ -86,14 +85,13 @@ export function Navbar() {
                     style={{ color: isActive ? '#00F5FF' : 'var(--text-secondary)' }}
                   >
                     {item.label}
-                    {isActive && (
-                      <motion.div
-                        layoutId="nav-underline"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                        style={{ background: 'linear-gradient(90deg, #00F5FF, #7C3AED)' }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
+                    <span
+                      className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-opacity duration-300"
+                      style={{
+                        background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
+                        opacity: isActive ? 1 : 0,
+                      }}
+                    />
                   </button>
                 );
               })}

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { Github, ArrowDown } from 'lucide-react';
 import { MagneticButton } from '@/components/ui/MagneticButton';
-import { Logo } from '@/components/ui/Logo';
 import { staggerContainer, charReveal, fadeUp } from '@/lib/animations';
 
 const ParticleField = dynamic(() => import('@/components/ui/ParticleField').then(m => ({ default: m.ParticleField })), {
@@ -38,27 +37,31 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        {/* Floating logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="flex justify-center mb-8"
-        >
-          <Logo size={72} float glow="strong" magnetic />
-        </motion.div>
-
         {/* Pre-title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex items-center justify-center gap-2 mb-6"
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="flex items-center justify-center gap-1.5 mb-6"
         >
-          <span className="section-label">
+          <span
+            style={{
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '0.8rem',
+              letterSpacing: '0.3em',
+              fontVariant: 'small-caps',
+              color: '#00F5FF',
+            }}
+          >
             &lt; Hello, World. I&apos;m &gt;
           </span>
-          <span className="w-2 h-4 bg-[#00F5FF] animate-blink inline-block" />
+          <span
+            className="animate-blink"
+            style={{ color: '#00F5FF', fontSize: '1rem', lineHeight: 1 }}
+            aria-hidden
+          >
+            ▋
+          </span>
         </motion.div>
 
         {/* Name */}

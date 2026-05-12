@@ -11,7 +11,6 @@ import { Certifications } from '@/components/sections/Certifications';
 import { Achievements } from '@/components/sections/Achievements';
 import { Contact } from '@/components/sections/Contact';
 import { Resume } from '@/components/sections/Resume';
-import { CursorTrail } from '@/components/ui/CursorTrail';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 
@@ -20,7 +19,6 @@ export default function Home() {
   return (
     <>
       <LoadingScreen />
-      <CursorTrail />
       <ScrollProgress />
       <Navbar />
 
@@ -34,6 +32,16 @@ export default function Home() {
           <GitHubStats />
           <Experience />
           <Certifications />
+          {/* Section divider */}
+          <div
+            aria-hidden
+            style={{
+              height: '1px',
+              margin: '0 auto',
+              maxWidth: '80rem',
+              background: 'linear-gradient(90deg, transparent, #00F5FF40, transparent)',
+            }}
+          />
           <Achievements />
           <Resume />
           <Contact />
