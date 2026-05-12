@@ -41,7 +41,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
           className="flex items-center justify-center gap-1.5 mb-6"
         >
           <span
@@ -64,11 +64,12 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* Name */}
+        {/* Name — character-by-character reveal, base delay 0.5s, stagger 0.04s */}
         <motion.h1
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
+          transition={{ delayChildren: 0.5, staggerChildren: 0.04 }}
           aria-label={name}
           className="font-syne font-extrabold leading-[1.05] mb-6 flex items-baseline justify-center gap-[0.25em] flex-nowrap whitespace-nowrap"
           style={{ fontSize: 'clamp(2.75rem, 7.5vw, 7rem)', perspective: '800px' }}
@@ -79,7 +80,7 @@ export function Hero() {
               <motion.span
                 key={i}
                 variants={charReveal}
-                transition={{ duration: 0.5, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.5, delay: 0.5 + i * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="inline-block"
                 style={{ color: '#F0F4FF' }}
               >
@@ -94,7 +95,7 @@ export function Hero() {
               <motion.span
                 key={i}
                 variants={charReveal}
-                transition={{ duration: 0.5, delay: (i + 5) * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.5, delay: 0.5 + (i + 4) * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="inline-block"
                 style={{
                   background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
@@ -111,11 +112,10 @@ export function Hero() {
 
         {/* Role rotator */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-xl sm:text-2xl font-outfit font-medium mb-6 h-8"
-          style={{ color: '#00F5FF' }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6, ease: 'easeOut' }}
+          className="text-xl sm:text-2xl font-outfit font-bold mb-6 h-10 flex items-center justify-center"
         >
           <TypeAnimation
             sequence={[
@@ -127,8 +127,16 @@ export function Hero() {
             ]}
             wrapper="span"
             speed={50}
-            deletionSpeed={70}
+            deletionSpeed={30}
             repeat={Infinity}
+            cursor={true}
+            style={{
+              background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              '--cursor-color': '#00F5FF',
+            } as React.CSSProperties}
           />
         </motion.div>
 
@@ -137,7 +145,7 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          transition={{ delay: 1 }}
+          transition={{ delay: 1.5 }}
           className="text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
           style={{ color: 'var(--text-secondary)' }}
         >
@@ -146,48 +154,55 @@ export function Hero() {
           · LPUNEST Scholar.
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <MagneticButton data-cursor="explore">
-            <button
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
-              style={{
-                background: 'linear-gradient(135deg, #00F5FF20, #7C3AED20)',
-                border: '1px solid rgba(0,245,255,0.4)',
-                color: '#00F5FF',
-                boxShadow: '0 0 30px rgba(0,245,255,0.15)',
-              }}
-            >
-              View My Work
-              <ArrowDown size={16} />
-            </button>
-          </MagneticButton>
-
-          <MagneticButton
-            href="https://github.com/ansh10tripathi"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="github"
+        {/* CTA Buttons — staggered 0.1s apart */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 0.6 }}
           >
-            <span
-              className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'var(--text-primary)',
-              }}
+            <MagneticButton data-cursor="explore">
+              <button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #00F5FF20, #7C3AED20)',
+                  border: '1px solid rgba(0,245,255,0.4)',
+                  color: '#00F5FF',
+                  boxShadow: '0 0 30px rgba(0,245,255,0.15)',
+                }}
+              >
+                View My Work
+                <ArrowDown size={16} />
+              </button>
+            </MagneticButton>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.9, duration: 0.6 }}
+          >
+            <MagneticButton
+              href="https://github.com/ansh10tripathi"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="github"
             >
-              <Github size={16} />
-              GitHub ↗
-            </span>
-          </MagneticButton>
-        </motion.div>
+              <span
+                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                <Github size={16} />
+                GitHub ↗
+              </span>
+            </MagneticButton>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
