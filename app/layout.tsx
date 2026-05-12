@@ -64,11 +64,11 @@ export const metadata: Metadata = {
       'Futuristic AI/ML engineer portfolio showcasing scalable software projects, optimization systems, modern web applications, and real-time simulations.',
     images: [
       {
-        url: '/images/og-image.png',
+        url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
-        type: 'image/png',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
     description:
       'Futuristic AI/ML engineer portfolio showcasing scalable software projects, optimization systems, modern web applications, and real-time simulations.',
-    images: ['/images/og-image.png'],
+    images: ['/images/og-image.jpg'],
   },
   robots: {
     index: true,
