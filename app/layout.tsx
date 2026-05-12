@@ -31,10 +31,13 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+const BASE_URL = 'https://ansh-portfolio-mocha-two.vercel.app';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
   description:
-    'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
+    'Futuristic AI/ML engineer portfolio showcasing scalable software projects, optimization systems, modern web applications, and real-time simulations.',
   keywords: [
     'AI Engineer', 'ML Engineer', 'Full Stack Developer', 'React Developer',
     'Python', 'Machine Learning', 'LPU', 'Ansh Tripathi', 'Portfolio',
@@ -46,7 +49,6 @@ export const metadata: Metadata = {
     apple: '/images/Logo.png',
     shortcut: '/images/Logo.png',
   },
-  // theme-color for browser chrome on mobile
   other: {
     'theme-color': '#050508',
     'color-scheme': 'dark light',
@@ -54,17 +56,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_IN',
-    url: 'https://anshtripathi.dev',
+    locale: 'en_US',
+    url: BASE_URL,
     siteName: 'Ansh Tripathi Portfolio',
     title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
     description:
-      'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
+      'Futuristic AI/ML engineer portfolio showcasing scalable software projects, optimization systems, modern web applications, and real-time simulations.',
     images: [
       {
-        // Absolute URL required — social crawlers cannot resolve relative paths
-        url: 'https://anshtripathi.dev/images/og-image.png',
-        secureUrl: 'https://anshtripathi.dev/images/og-image.png',
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
@@ -74,19 +74,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@ansh10tripathi',
-    creator: '@ansh10tripathi',
     title: 'Ansh Tripathi — AI/ML Engineer & Full Stack Developer',
     description:
-      'Futuristic AI/ML engineer portfolio showcasing modern web apps, optimization systems, real-time simulations, and scalable software projects.',
-    images: ['https://anshtripathi.dev/images/og-image.png'],
+      'Futuristic AI/ML engineer portfolio showcasing scalable software projects, optimization systems, modern web applications, and real-time simulations.',
+    images: ['/images/og-image.png'],
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
-  metadataBase: new URL('https://anshtripathi.dev'),
 };
 
 const jsonLd = {
@@ -94,7 +91,7 @@ const jsonLd = {
   '@type': 'Person',
   name: 'Ansh Tripathi',
   jobTitle: 'AI/ML Engineer',
-  url: 'https://anshtripathi.dev',
+  url: BASE_URL,
   sameAs: [
     'https://github.com/ansh10tripathi',
     'https://linkedin.com/in/ansh-tripathi10',
