@@ -93,7 +93,7 @@ export interface NavItem {
 export interface TimelineEntry {
   year: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   org: string;
   date: string;
   type: 'Education' | 'Project' | 'Achievement' | 'Certification' | 'Activity' | 'Competition';
