@@ -242,7 +242,7 @@ export function Contact() {
             <div className="flex gap-3 pt-2">
               {[
                 { href: PERSONAL.github, icon: Github, label: 'GitHub', color: '#fff' },
-                { href: `https://${PERSONAL.linkedin}`, icon: Linkedin, label: 'LinkedIn', color: '#0A66C2' },
+                { href: PERSONAL.linkedin, icon: Linkedin, label: 'LinkedIn', color: '#0A66C2' },
               ].map(({ href, icon: Icon, label, color }) => (
                 <motion.a
                   key={label}

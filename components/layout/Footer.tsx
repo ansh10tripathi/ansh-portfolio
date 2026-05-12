@@ -65,7 +65,7 @@ export function Footer() {
             <div className="flex gap-3">
               {[
                 { href: PERSONAL.github, icon: Github, label: 'GitHub', color: '#fff' },
-                { href: `https://${PERSONAL.linkedin}`, icon: Linkedin, label: 'LinkedIn', color: '#0A66C2' },
+                { href: PERSONAL.linkedin, icon: Linkedin, label: 'LinkedIn', color: '#0A66C2' },
                 { href: `mailto:${PERSONAL.email}`, icon: Mail, label: 'Email', color: '#00F5FF' },
               ].map(({ href, icon: Icon, label, color }) => (
                 <a

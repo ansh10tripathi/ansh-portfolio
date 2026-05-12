@@ -58,7 +58,7 @@ export function Resume() {
             </MagneticButton>
 
             <MagneticButton
-              href={`https://${PERSONAL.linkedin}`}
+              href={PERSONAL.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="linkedin"
