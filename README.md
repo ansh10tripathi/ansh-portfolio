@@ -208,20 +208,6 @@ Portfolio/
 
 ---
 
-## 📸 Screenshots
-
-> *Add screenshots by placing images in `public/images/screenshots/` and updating the paths below.*
-
-| Section | Preview |
-|---|---|
-| 🦸 Hero | `public/images/screenshots/hero.png` |
-| 🗂️ Projects | `public/images/screenshots/projects.png` |
-| 📊 GitHub Stats | `public/images/screenshots/github-stats.png` |
-| 📬 Contact | `public/images/screenshots/contact.png` |
-| 📱 Mobile View | `public/images/screenshots/mobile.png` |
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -273,23 +259,6 @@ Open [http://localhost:3000](http://localhost:3000) — hot reload is enabled au
 npm run build   # Compile and optimize
 npm start       # Start production server
 ```
-
----
-
-## ☁️ Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new) and import your repository
-3. Add environment variables in the Vercel dashboard (Settings → Environment Variables)
-4. Click **Deploy** — Vercel auto-deploys on every push to `main`
-5. Optionally add a custom domain via Vercel dashboard → Domains
-
-The included `vercel.json` is pre-configured with:
-- **Region:** Mumbai (`bom1`) for low latency in India
-- **Security headers:** `X-Frame-Options`, `X-XSS-Protection`, `X-Content-Type-Options`
-- **Resume caching:** 24-hour `Cache-Control` for the PDF
 
 ---
 
