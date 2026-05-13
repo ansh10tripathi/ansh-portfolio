@@ -13,10 +13,9 @@ interface GlowCardProps {
   animate?: boolean;
 }
 
-/** Glassmorphism card with optional glow border on hover */
 export function GlowCard({
   children,
-  glowColor = '#00F5FF',
+  glowColor = 'var(--accent-cyan)',
   className,
   hoverEffect = true,
   animate = false,
@@ -30,24 +29,20 @@ export function GlowCard({
       animate={animate && inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5 }}
       className={cn(
-        'rounded-2xl border border-white/5 bg-white/[0.03] backdrop-blur-sm relative overflow-hidden',
-        'transition-all duration-300',
-        hoverEffect && 'hover:border-opacity-40 group',
+        'rounded-2xl relative overflow-hidden transition-all duration-300',
+        hoverEffect && 'group',
         className
       )}
-      style={
-        hoverEffect
-          ? {
-              ['--glow-color' as string]: glowColor,
-            }
-          : {}
-      }
+      style={{
+        background: 'var(--glass-bg)',
+        backdropFilter: `blur(var(--glass-blur))`,
+        WebkitBackdropFilter: `blur(var(--glass-blur))`,
+        border: '1px solid var(--glass-border)',
+        boxShadow: 'var(--glass-shadow)',
+      }}
       whileHover={
         hoverEffect
-          ? {
-              boxShadow: `0 0 30px ${glowColor}20, 0 0 60px ${glowColor}10`,
-              borderColor: `${glowColor}40`,
-            }
+          ? { boxShadow: 'var(--glow-card-hover)', borderColor: 'var(--border-accent)' }
           : {}
       }
     >

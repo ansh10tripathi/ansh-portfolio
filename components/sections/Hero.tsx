@@ -1,7 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
+import { useCallback } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { Github, ArrowDown } from 'lucide-react';
 import { MagneticButton } from '@/components/ui/MagneticButton';
@@ -11,25 +12,65 @@ const ParticleField = dynamic(() => import('@/components/ui/ParticleField').then
   ssr: false,
 });
 
-/** Cinematic hero section with particle field and animated text */
+const SPRING = { stiffness: 80, damping: 30 };
+
 export function Hero() {
   const name = 'Ansh Tripathi';
+
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const pX = useSpring(rawX, SPRING);
+  const pY = useSpring(rawY, SPRING);
+  const loX = useSpring(useMotionValue(0), SPRING);
+  const loY = useSpring(useMotionValue(0), SPRING);
+  const roX = useSpring(useMotionValue(0), SPRING);
+  const roY = useSpring(useMotionValue(0), SPRING);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (window.matchMedia('(hover: none)').matches) return;
+    const normX = (e.clientX / window.innerWidth  - 0.5) * 2;
+    const normY = (e.clientY / window.innerHeight - 0.5) * 2;
+    rawX.set(normX * 15);
+    rawY.set(normY * 10);
+    loX.set(normX *  25);
+    loY.set(normY *  20);
+    roX.set(normX * -20);
+    roY.set(normY * -15);
+  }, [rawX, rawY, loX, loY, roX, roY]);
 
   return (
     <section
       id="hero"
       className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #050508 0%, #0D0D1A 50%, #12052e 100%)' }}
+      style={{ background: 'var(--grad-hero)' }}
+      onMouseMove={handleMouseMove}
     >
-      {/* Particle canvas */}
-      <ParticleField className="absolute inset-0 z-0" />
+      {/* Light mode blueprint grid */}
+      <div className="hero-grid-overlay" />
 
-      {/* Gradient orbs */}
-      <div className="orb-cyan" style={{ top: '10%', left: '-10%' }} />
-      <div className="orb-violet" style={{ bottom: '10%', right: '-10%' }} />
+      {/* Particle canvas */}
+      <motion.div
+        className="absolute z-0 pointer-events-none"
+        style={{ width: '130%', height: '130%', top: '-15%', left: '-15%', x: pX, y: pY }}
+      >
+        <ParticleField className="w-full h-full" />
+      </motion.div>
+
+      {/* Left orb */}
+      <motion.div
+        className="orb-cyan pointer-events-none"
+        style={{ top: '10%', left: '-10%', x: loX, y: loY }}
+      />
+
+      {/* Right orb */}
+      <motion.div
+        className="orb-violet pointer-events-none"
+        style={{ bottom: '10%', right: '-10%', x: roX, y: roY }}
+      />
 
       {/* Noise overlay */}
-      <div className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
@@ -50,21 +91,21 @@ export function Hero() {
               fontSize: '0.8rem',
               letterSpacing: '0.3em',
               fontVariant: 'small-caps',
-              color: '#00F5FF',
+              color: 'var(--accent-cyan)',
             }}
           >
             &lt; Hello, World. I&apos;m &gt;
           </span>
           <span
             className="animate-blink"
-            style={{ color: '#00F5FF', fontSize: '1rem', lineHeight: 1 }}
+            style={{ color: 'var(--accent-cyan)', fontSize: '1rem', lineHeight: 1 }}
             aria-hidden
           >
             ▋
           </span>
         </motion.div>
 
-        {/* Name — character-by-character reveal, base delay 0.5s, stagger 0.04s */}
+        {/* Name */}
         <motion.h1
           variants={staggerContainer}
           initial="hidden"
@@ -72,9 +113,8 @@ export function Hero() {
           transition={{ delayChildren: 0.5, staggerChildren: 0.04 }}
           aria-label={name}
           className="font-syne font-extrabold leading-[1.05] mb-6 flex items-baseline justify-center gap-[0.25em] flex-nowrap whitespace-nowrap"
-          style={{ fontSize: 'clamp(2.75rem, 7.5vw, 7rem)', perspective: '800px' }}
+          style={{ fontSize: 'clamp(2.2rem, 8vw, 7rem)', perspective: '800px' }}
         >
-          {/* "Ansh" — white */}
           <span className="inline-flex flex-nowrap">
             {'Ansh'.split('').map((char, i) => (
               <motion.span
@@ -82,14 +122,13 @@ export function Hero() {
                 variants={charReveal}
                 transition={{ duration: 0.5, delay: 0.5 + i * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="inline-block"
-                style={{ color: '#F0F4FF' }}
+                style={{ color: 'var(--text-primary)' }}
               >
                 {char}
               </motion.span>
             ))}
           </span>
 
-          {/* "Tripathi" — gradient */}
           <span className="inline-flex flex-nowrap">
             {'Tripathi'.split('').map((char, i) => (
               <motion.span
@@ -98,7 +137,7 @@ export function Hero() {
                 transition={{ duration: 0.5, delay: 0.5 + (i + 4) * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="inline-block"
                 style={{
-                  background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
+                  background: 'var(--grad-text)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -131,11 +170,10 @@ export function Hero() {
             repeat={Infinity}
             cursor={true}
             style={{
-              background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
+              background: 'var(--grad-accent)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              '--cursor-color': '#00F5FF',
             } as React.CSSProperties}
           />
         </motion.div>
@@ -154,8 +192,8 @@ export function Hero() {
           · LPUNEST Scholar.
         </motion.p>
 
-        {/* CTA Buttons — staggered 0.1s apart */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        {/* CTA Buttons */}
+        <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,13 +202,15 @@ export function Hero() {
             <MagneticButton data-cursor="explore">
               <button
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
+                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base"
                 style={{
-                  background: 'linear-gradient(135deg, #00F5FF20, #7C3AED20)',
-                  border: '1px solid rgba(0,245,255,0.4)',
-                  color: '#00F5FF',
-                  boxShadow: '0 0 30px rgba(0,245,255,0.15)',
+                  background: 'var(--grad-btn-primary)',
+                  color: 'var(--text-inverse)',
+                  boxShadow: 'var(--glow-btn)',
+                  transition: 'box-shadow 0.3s ease',
                 }}
+                onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
+                onMouseLeave={e => (e.currentTarget.style.filter = 'none')}
               >
                 View My Work
                 <ArrowDown size={16} />
@@ -190,11 +230,20 @@ export function Hero() {
               data-cursor="github"
             >
               <span
-                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base transition-all duration-200 hover:scale-105"
+                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base"
                 style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'transparent',
+                  border: '1px solid var(--border-accent)',
                   color: 'var(--text-primary)',
+                  transition: 'background 0.2s ease, box-shadow 0.3s ease',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'var(--bg-card)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = 'var(--glow-cyan)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'transparent';
+                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
                 }}
               >
                 <Github size={16} />
@@ -219,7 +268,7 @@ export function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ArrowDown size={16} style={{ color: '#00F5FF' }} />
+          <ArrowDown size={16} style={{ color: 'var(--accent-cyan)' }} />
         </motion.div>
       </motion.div>
     </section>

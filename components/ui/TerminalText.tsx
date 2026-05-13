@@ -15,7 +15,6 @@ const LINES: TerminalLine[] = [
   { prompt: 'ansh@lpu:~$ location', output: '> Punjab, India 📍', delay: 3600 },
 ];
 
-/** Typewriter terminal effect component */
 export function TerminalText() {
   const [visibleLines, setVisibleLines] = useState<number[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,16 +24,13 @@ export function TerminalText() {
       ([entry]) => {
         if (entry.isIntersecting) {
           LINES.forEach((line, i) => {
-            setTimeout(() => {
-              setVisibleLines((prev) => [...prev, i]);
-            }, line.delay);
+            setTimeout(() => setVisibleLines((prev) => [...prev, i]), line.delay);
           });
           observer.disconnect();
         }
       },
       { threshold: 0.3 }
     );
-
     if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
@@ -42,14 +38,24 @@ export function TerminalText() {
   return (
     <div
       ref={containerRef}
-      className="rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm overflow-hidden"
+      className="rounded-xl overflow-hidden"
+      style={{
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
+      }}
     >
       {/* Terminal header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/[0.02]">
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{
+          background: 'var(--bg-card-hover)',
+          borderBottom: '1px solid var(--border-card)',
+        }}
+      >
         <div className="w-3 h-3 rounded-full bg-[#F43F5E]" />
         <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
         <div className="w-3 h-3 rounded-full bg-[#10B981]" />
-        <span className="ml-2 text-xs text-[var(--text-muted)] font-mono">ansh@lpu — bash</span>
+        <span className="ml-2 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>ansh@lpu — bash</span>
       </div>
 
       {/* Terminal body */}
@@ -73,15 +79,9 @@ export function TerminalText() {
 }
 
 function TypewriterLine({
-  prompt,
-  output,
-  active,
-  isLast,
+  prompt, output, active, isLast,
 }: {
-  prompt: string;
-  output: string;
-  active: boolean;
-  isLast: boolean;
+  prompt: string; output: string; active: boolean; isLast: boolean;
 }) {
   const [promptText, setPromptText] = useState('');
   const [outputText, setOutputText] = useState('');
@@ -109,17 +109,15 @@ function TypewriterLine({
 
   return (
     <div className="font-mono text-sm space-y-1">
-      <div className="text-[#00F5FF]">
+      <div style={{ color: 'var(--accent-cyan)' }}>
         {promptText}
-        {active && promptText.length < prompt.length && (
-          <span className="animate-blink">▋</span>
-        )}
+        {active && promptText.length < prompt.length && <span className="animate-blink">▋</span>}
       </div>
       {showOutput && (
-        <div className="text-[var(--text-secondary)] pl-2">
+        <div className="pl-2" style={{ color: 'var(--text-secondary)' }}>
           {outputText}
           {isLast && outputText.length >= output.length && (
-            <span className="animate-blink text-[#00F5FF]">▋</span>
+            <span className="animate-blink" style={{ color: 'var(--accent-cyan)' }}>▋</span>
           )}
         </div>
       )}
