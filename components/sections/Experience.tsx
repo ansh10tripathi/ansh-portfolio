@@ -22,19 +22,42 @@ export function Experience() {
           animate={inView ? 'visible' : 'hidden'}
           className="text-center mb-14"
         >
-          <p className="section-label mb-3">&lt; Journey /&gt;</p>
-          <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
+          <p className="section-label mb-2 sm:mb-3">&lt; Journey /&gt;</p>
+          <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
             My <span className="gradient-text">Timeline</span>
           </h2>
         </motion.div>
 
         <div ref={timelineRef} className="relative">
-          {/* Background line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2" style={{ background: 'var(--border-subtle)' }} />
+          {/* Background line — left edge on mobile, center on sm+ */}
+          <div
+            className="absolute top-0 bottom-0 w-px"
+            style={{ background: 'var(--border-subtle)', left: '8px' }}
+          />
+          <div className="sm:hidden" />
+          <div
+            className="hidden sm:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            style={{ background: 'var(--border-subtle)' }}
+          />
           {/* Scroll-linked gradient line */}
           <motion.div
-            className="absolute left-1/2 top-0 w-px -translate-x-1/2"
-            style={{ height: '100%', scaleY: lineScaleY, transformOrigin: 'top', background: 'var(--grad-accent)' }}
+            className="absolute top-0 w-px"
+            style={{
+              left: '8px',
+              height: '100%',
+              scaleY: lineScaleY,
+              transformOrigin: 'top',
+              background: 'var(--grad-accent)',
+            }}
+          />
+          <motion.div
+            className="hidden sm:block absolute left-1/2 top-0 w-px -translate-x-1/2"
+            style={{
+              height: '100%',
+              scaleY: lineScaleY,
+              transformOrigin: 'top',
+              background: 'var(--grad-accent)',
+            }}
           />
 
           <div className="space-y-8">
@@ -46,14 +69,15 @@ export function Experience() {
               };
 
               return (
-                <div key={i} className={`relative flex items-center ${isLeft ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}>
-                  <div className={`flex-1 pl-10 sm:pl-0 ${isLeft ? 'sm:pr-12' : 'sm:pl-12'}`}>
+                <div key={i} className={`relative flex items-start sm:items-center ${isLeft ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}>
+                  {/* Card — full width on mobile with left padding for the line */}
+                  <div className={`flex-1 pl-6 sm:pl-0 ${isLeft ? 'sm:pr-12' : 'sm:pl-12'}`}>
                     <motion.div
                       variants={cardVariants}
                       initial="hidden"
                       whileInView="visible"
                       viewport={{ once: true, amount: 0.2 }}
-                      className="rounded-xl p-5"
+                      className="rounded-xl p-4 sm:p-5"
                       style={{
                         background: 'var(--bg-card)',
                         border: '1px solid var(--border-card)',
@@ -95,8 +119,8 @@ export function Experience() {
                     </motion.div>
                   </div>
 
-                  {/* Node */}
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10">
+                  {/* Node — left edge on mobile, center on sm+ */}
+                  <div className="absolute left-[2px] sm:left-1/2 sm:-translate-x-1/2 z-10">
                     <motion.div
                       className="w-4 h-4 rounded-full border-2 relative"
                       style={{ background: entry.color, borderColor: 'var(--bg-elevated)' }}

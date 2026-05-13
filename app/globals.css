@@ -321,22 +321,22 @@ body {
 /* ─── Orb Animations ─── */
 .orb-cyan {
   position: absolute;
-  width: 600px;
-  height: 600px;
+  width: clamp(200px, 50vw, 600px);
+  height: clamp(200px, 50vw, 600px);
   border-radius: 50%;
   background: radial-gradient(circle, var(--orb-left) 0%, transparent 70%);
-  filter: blur(80px);
+  filter: blur(60px);
   animation: float 6s ease-in-out infinite;
   pointer-events: none;
 }
 
 .orb-violet {
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: clamp(160px, 40vw, 500px);
+  height: clamp(160px, 40vw, 500px);
   border-radius: 50%;
   background: radial-gradient(circle, var(--orb-right) 0%, transparent 70%);
-  filter: blur(80px);
+  filter: blur(60px);
   animation: float 9s ease-in-out infinite reverse;
   pointer-events: none;
 }
@@ -448,9 +448,12 @@ body {
 .perspective-1000 { perspective: 1000px; }
 .preserve-3d { transform-style: preserve-3d; }
 
-.section-padding { padding: 6.25rem 0; }
+.section-padding { padding: 5rem 0; }
 @media (max-width: 768px) {
-  .section-padding { padding: 3.75rem 0; }
+  .section-padding { padding: 3rem 0; }
+}
+@media (max-width: 480px) {
+  .section-padding { padding: 2.5rem 0; }
 }
 
 .section-fade-bottom { position: relative; }
@@ -544,7 +547,7 @@ body {
 /* ─── Ghost Number ─── */
 .ghost-number {
   font-family: var(--font-syne), sans-serif;
-  font-size: clamp(6rem, 15vw, 12rem);
+  font-size: clamp(4rem, 10vw, 12rem);
   font-weight: 800;
   color: transparent;
   -webkit-text-stroke: 1px var(--border-subtle);
@@ -555,4 +558,18 @@ body {
   pointer-events: none;
   user-select: none;
   line-height: 1;
+}
+
+/* ─── Mobile: reduce motion complexity ─── */
+@media (max-width: 640px) {
+  .orb-cyan, .orb-violet {
+    filter: blur(40px);
+    animation: none;
+  }
+}
+
+/* ─── Prevent any element from causing horizontal overflow ─── */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }

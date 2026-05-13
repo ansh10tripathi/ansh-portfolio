@@ -110,7 +110,7 @@ function CvStrip() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
-      className="mb-12 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 px-6 py-5"
+      className="mb-8 sm:mb-12 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-5 text-center sm:text-left"
       style={{
         background: 'var(--bg-card)',
         borderTop: '1px solid var(--border-accent)',
@@ -124,18 +124,16 @@ function CvStrip() {
         <p className="font-syne font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Download my resume</p>
       </div>
 
-      <div className="flex items-center gap-3 flex-shrink-0">
+      <div className="flex flex-col xs:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto flex-shrink-0">
         <motion.a
           href="/resume/Ansh_Tripathi_Resume.pdf"
           download
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-outfit font-semibold text-sm"
+          className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-outfit font-semibold text-sm"
           style={{ background: 'var(--grad-btn-primary)', color: 'var(--text-inverse)', boxShadow: 'var(--glow-btn)' }}
-          animate={{ boxShadow: ['var(--glow-btn)', '0 0 35px rgba(0,245,255,0.55)', 'var(--glow-btn)'] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
-          <Download size={15} />
+          <Download size={14} />
           Download CV
         </motion.a>
 
@@ -143,12 +141,12 @@ function CvStrip() {
           href={PERSONAL.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-outfit font-semibold text-sm"
+          className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-outfit font-semibold text-sm"
           style={{ background: 'transparent', border: '1px solid var(--border-card)', color: 'var(--text-primary)' }}
           whileHover={{ borderColor: 'var(--border-accent)', color: 'var(--accent-cyan)', scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
-          <ExternalLink size={15} />
+          <ExternalLink size={14} />
           View LinkedIn
         </motion.a>
       </div>
@@ -198,9 +196,9 @@ export function Contact() {
     <section id="contact" className="section-padding relative" style={{ background: 'var(--bg-base)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <CvStrip />
-        <motion.div ref={ref} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-14">
-          <p className="section-label mb-3">&lt; Contact /&gt;</p>
-          <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
+        <motion.div ref={ref} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-8 sm:mb-14">
+          <p className="section-label mb-2 sm:mb-3">&lt; Contact /&gt;</p>
+          <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
             Let&apos;s Build <span className="gradient-text">Something</span>
           </h2>
           <p className="mt-4 max-w-xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
@@ -208,7 +206,7 @@ export function Contact() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Left — Info */}
           <motion.div variants={slideLeft} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="space-y-6">
             {[

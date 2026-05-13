@@ -164,25 +164,25 @@ export function Skills() {
     <section id="skills" className="section-padding relative" style={{ background: 'var(--bg-base)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={sectionRef}>
-          <motion.div variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-12">
-            <p className="section-label mb-3">&lt; Skills /&gt;</p>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
+          <motion.div variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-8 sm:mb-12">
+            <p className="section-label mb-2 sm:mb-3">&lt; Skills /&gt;</p>
+            <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
               Technical <span className="gradient-text">Arsenal</span>
             </h2>
           </motion.div>
 
           {/* Tabs */}
-          <div className="skills-tabs-scroll flex justify-start sm:justify-center gap-1 mb-10 relative px-1">
+          <div className="skills-tabs-scroll flex justify-start sm:justify-center gap-0 mb-6 sm:mb-10 relative">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key;
               return (
                 <button
                   key={tab.key}
                   onClick={() => switchTab(tab.key)}
-                  className="relative px-5 py-2 rounded-t-lg transition-colors duration-200"
+                  className="relative px-3 sm:px-5 py-2 rounded-t-lg transition-colors duration-200 whitespace-nowrap"
                   style={{
                     fontFamily: 'var(--font-outfit), sans-serif',
-                    fontSize: '14px',
+                    fontSize: 'clamp(11px, 2.5vw, 14px)',
                     fontWeight: 500,
                     color: isActive ? tab.accent : 'var(--text-muted)',
                     background: 'transparent',
@@ -217,7 +217,7 @@ export function Skills() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"
             >
               {SKILL_DATA[activeTab].map((skill) => (
                 <SkillCard key={skill.name} skill={skill} accent={accent} animate={arcActive} />

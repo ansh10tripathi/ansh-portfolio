@@ -48,7 +48,7 @@ export function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <button onClick={() => scrollTo('#hero')} className="relative group" aria-label="Scroll to top">
               <motion.div
@@ -85,7 +85,7 @@ export function Navbar() {
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <ThemeToggle />
               <MagneticButton className="hidden sm:inline-flex" data-cursor="download">
                 <a
@@ -105,12 +105,12 @@ export function Navbar() {
               </MagneticButton>
 
               <button
-                className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg"
+                className="md:hidden w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg"
                 style={{ border: '1px solid var(--border-subtle)', background: 'var(--bg-glass)', color: 'var(--text-primary)' }}
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Toggle menu"
               >
-                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+                {mobileOpen ? <X size={16} /> : <Menu size={16} />}
               </button>
             </div>
           </div>
@@ -127,7 +127,7 @@ export function Navbar() {
             className="fixed inset-0 z-40 md:hidden"
             style={{ background: 'var(--bg-nav)', backdropFilter: 'blur(20px)' }}
           >
-            <div className="flex flex-col items-center justify-center h-full gap-6">
+            <div className="flex flex-col items-center justify-center h-full gap-5 px-6">
               {NAV_ITEMS.map((item, i) => (
                 <motion.button
                   key={item.href}
@@ -135,7 +135,7 @@ export function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
                   onClick={() => scrollTo(item.href)}
-                  className="text-3xl font-syne font-bold transition-colors duration-200"
+                  className="text-2xl sm:text-3xl font-syne font-bold transition-colors duration-200"
                   style={{ color: activeSection === item.href.replace('#', '') ? 'var(--accent-cyan)' : 'var(--text-primary)' }}
                 >
                   {item.label}
@@ -147,14 +147,14 @@ export function Navbar() {
                 transition={{ delay: NAV_ITEMS.length * 0.07 }}
                 href="/resume/Ansh_Tripathi_Resume.pdf"
                 download
-                className="mt-4 flex items-center gap-2 px-6 py-3 rounded-xl text-base font-outfit font-medium"
+                className="mt-2 flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-outfit font-medium"
                 style={{
                   background: 'var(--grad-btn-primary)',
                   color: 'var(--text-inverse)',
                 }}
                 onClick={() => setMobileOpen(false)}
               >
-                <Download size={16} />
+                <Download size={15} />
                 Download CV
               </motion.a>
             </div>

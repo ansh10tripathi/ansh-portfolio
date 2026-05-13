@@ -270,7 +270,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         <div className={`flex flex-col md:flex-row ${!isEven ? 'md:flex-row-reverse' : ''} gap-0`}>
           {/* Text side */}
-          <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between">
+          <div className="flex-1 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <span
@@ -326,9 +326,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </div>
           </div>
 
-          {/* Visual side */}
+          {/* Visual side — hidden on mobile to save space */}
           <div
-            className="md:w-64 lg:w-80 flex items-center justify-center p-6 relative overflow-hidden min-h-[200px]"
+            className="hidden sm:flex md:w-56 lg:w-80 items-center justify-center p-4 sm:p-6 relative overflow-hidden min-h-[180px]"
             style={{
               background: `linear-gradient(135deg, ${project.color}08, ${project.color}03)`,
               borderLeft: isEven ? `1px solid ${project.color}15` : 'none',
@@ -370,8 +370,8 @@ export function Projects() {
           animate={inView ? 'visible' : 'hidden'}
           className="text-center mb-14"
         >
-          <p className="section-label mb-3">&lt; Projects /&gt;</p>
-          <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
+          <p className="section-label mb-2 sm:mb-3">&lt; Projects /&gt;</p>
+          <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
             Things I&apos;ve <span style={{ color: 'var(--accent-violet)' }} className="gradient-text">Built</span>
           </h2>
           <p className="mt-4 max-w-xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
@@ -379,7 +379,7 @@ export function Projects() {
           </p>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {PROJECTS.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}

@@ -36,9 +36,9 @@ export function GitHubStats() {
   return (
     <section id="github" className="section-padding relative" style={{ background: 'var(--bg-base)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div ref={ref} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-12">
-          <p className="section-label mb-3">&lt; GitHub /&gt;</p>
-          <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
+        <motion.div ref={ref} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-8 sm:mb-12">
+          <p className="section-label mb-2 sm:mb-3">&lt; GitHub /&gt;</p>
+          <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
             Open Source <span className="gradient-text">Activity</span>
           </h2>
         </motion.div>
@@ -52,7 +52,7 @@ export function GitHubStats() {
             <motion.div
               key={card.label}
               variants={fadeUp}
-              className="group/card rounded-2xl p-6 text-center"
+              className="group/card rounded-2xl p-4 sm:p-6 text-center"
               style={{
                 background: 'var(--bg-card)',
                 border: '1px solid var(--border-card)',
@@ -67,7 +67,7 @@ export function GitHubStats() {
                   className="transition-all duration-300 group-hover/card:drop-shadow-[0_0_8px_var(--glow)]"
                 />
               </div>
-              <div className="font-syne font-bold text-3xl" style={{ color: 'var(--accent-cyan)' }}>
+              <div className="font-syne font-bold text-2xl sm:text-3xl" style={{ color: 'var(--accent-cyan)' }}>
                 {loading ? (
                   <div className="h-8 w-12 mx-auto rounded animate-pulse" style={{ background: 'var(--border-subtle)' }} />
                 ) : (
@@ -92,7 +92,7 @@ export function GitHubStats() {
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block rounded-xl p-5 transition-all duration-200 group"
+                className="block rounded-xl p-4 sm:p-5 transition-all duration-200 group"
                 style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 whileHover={{ borderColor: 'var(--border-accent)', boxShadow: 'var(--glow-card-hover)', y: -2 }}
               >
@@ -131,12 +131,12 @@ export function GitHubStats() {
           variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} transition={{ delay: 0.4 }}
           className="flex justify-center"
         >
-          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border-card)' }}>
+          <div className="rounded-2xl overflow-hidden w-full" style={{ border: '1px solid var(--border-card)' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://github-readme-streak-stats.herokuapp.com/?user=ansh10tripathi&theme=dark&background=0D0D1A&border=1a1a3e&ring=00F5FF&fire=7C3AED&currStreakLabel=00F5FF"
               alt="GitHub contribution streak statistics for Ansh Tripathi"
-              className="max-w-full streak-img"
+              className="w-full h-auto streak-img"
               loading="lazy"
               width={800}
               height={200}

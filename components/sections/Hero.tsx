@@ -77,19 +77,19 @@ export function Hero() {
       />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-4 sm:px-6 w-full max-w-4xl mx-auto">
         {/* Pre-title */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-          className="flex items-center justify-center gap-1.5 mb-6"
+          className="flex items-center justify-center gap-1.5 mb-4 sm:mb-6"
         >
           <span
             style={{
               fontFamily: 'var(--font-jetbrains), monospace',
-              fontSize: '0.8rem',
-              letterSpacing: '0.3em',
+              fontSize: 'clamp(0.6rem, 2vw, 0.8rem)',
+              letterSpacing: '0.2em',
               fontVariant: 'small-caps',
               color: 'var(--accent-cyan)',
             }}
@@ -112,8 +112,8 @@ export function Hero() {
           animate="visible"
           transition={{ delayChildren: 0.5, staggerChildren: 0.04 }}
           aria-label={name}
-          className="font-syne font-extrabold leading-[1.05] mb-6 flex items-baseline justify-center gap-[0.25em] flex-nowrap whitespace-nowrap"
-          style={{ fontSize: 'clamp(2.2rem, 8vw, 7rem)', perspective: '800px' }}
+          className="font-syne font-extrabold leading-[1.1] mb-4 sm:mb-6 flex flex-wrap items-baseline justify-center gap-x-[0.25em] gap-y-0"
+          style={{ fontSize: 'clamp(2.4rem, 10vw, 7rem)', perspective: '800px' }}
         >
           <span className="inline-flex flex-nowrap">
             {'Ansh'.split('').map((char, i) => (
@@ -154,7 +154,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6, ease: 'easeOut' }}
-          className="text-xl sm:text-2xl font-outfit font-bold mb-6 h-10 flex items-center justify-center"
+          className="text-base sm:text-xl font-outfit font-bold mb-4 sm:mb-6 h-8 sm:h-10 flex items-center justify-center"
         >
           <TypeAnimation
             sequence={[
@@ -184,7 +184,7 @@ export function Hero() {
           initial="hidden"
           animate="visible"
           transition={{ delay: 1.5 }}
-          className="text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-sm sm:text-base max-w-xl mx-auto mb-7 sm:mb-10 leading-relaxed px-2"
           style={{ color: 'var(--text-secondary)' }}
         >
           Building at the intersection of machine learning, real-time systems, and modern web.{' '}
@@ -193,27 +193,28 @@ export function Hero() {
         </motion.p>
 
         {/* CTA Buttons */}
-        <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.8, duration: 0.6 }}
+            className="w-full sm:w-auto"
           >
             <MagneticButton data-cursor="explore">
               <button
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base"
+                className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-outfit font-semibold text-sm sm:text-base"
                 style={{
                   background: 'var(--grad-btn-primary)',
                   color: 'var(--text-inverse)',
                   boxShadow: 'var(--glow-btn)',
-                  transition: 'box-shadow 0.3s ease',
+                  transition: 'filter 0.3s ease',
                 }}
                 onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
                 onMouseLeave={e => (e.currentTarget.style.filter = 'none')}
               >
                 View My Work
-                <ArrowDown size={16} />
+                <ArrowDown size={15} />
               </button>
             </MagneticButton>
           </motion.div>
@@ -222,6 +223,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.9, duration: 0.6 }}
+            className="w-full sm:w-auto"
           >
             <MagneticButton
               href="https://github.com/ansh10tripathi"
@@ -230,7 +232,7 @@ export function Hero() {
               data-cursor="github"
             >
               <span
-                className="flex items-center gap-2 px-8 py-4 rounded-xl font-outfit font-semibold text-base"
+                className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-outfit font-semibold text-sm sm:text-base"
                 style={{
                   background: 'transparent',
                   border: '1px solid var(--border-accent)',
@@ -246,7 +248,7 @@ export function Hero() {
                   (e.currentTarget as HTMLElement).style.boxShadow = 'none';
                 }}
               >
-                <Github size={16} />
+                <Github size={15} />
                 GitHub ↗
               </span>
             </MagneticButton>

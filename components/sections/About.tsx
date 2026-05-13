@@ -29,7 +29,7 @@ export function About() {
   return (
     <section id="about" className="section-padding relative overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-center">
+        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-16 items-center">
 
           {/* Left — 3/5 */}
           <motion.div
@@ -38,8 +38,8 @@ export function About() {
             animate={inView ? 'visible' : 'hidden'}
             className="lg:col-span-3 order-2 lg:order-1"
           >
-            <p className="section-label mb-3">&lt; About Me /&gt;</p>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl mb-6" style={{ color: 'var(--text-primary)' }}>
+            <p className="section-label mb-2 sm:mb-3">&lt; About Me /&gt;</p>
+            <h2 className="font-syne font-bold text-2xl sm:text-3xl lg:text-5xl mb-4 sm:mb-6" style={{ color: 'var(--text-primary)' }}>
               The Mind Behind{' '}
               <span className="gradient-text">the Machine</span>
             </h2>
@@ -65,17 +65,17 @@ export function About() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-2 gap-3 mt-6 sm:mt-8">
               {STATS.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-xl p-4 text-center"
+                  className="rounded-xl p-3 sm:p-4 text-center"
                   style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 >
-                  <div className="font-syne font-bold text-2xl sm:text-3xl" style={{ color: 'var(--accent-cyan)' }}>
+                  <div className="font-syne font-bold text-xl sm:text-2xl" style={{ color: 'var(--accent-cyan)' }}>
                     <CounterAnim target={stat.value} suffix={stat.suffix} decimals={stat.decimals ?? 0} />
                   </div>
-                  <div className="text-xs mt-1 font-outfit" style={{ color: 'var(--text-muted)' }}>{stat.label}</div>
+                  <div className="text-[10px] sm:text-xs mt-1 font-outfit" style={{ color: 'var(--text-muted)' }}>{stat.label}</div>
                 </div>
               ))}
             </div>
