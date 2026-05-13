@@ -10,6 +10,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react', 'react-icons'],
   },
+  devIndicators: false,
 };
 
 module.exports = nextConfig;

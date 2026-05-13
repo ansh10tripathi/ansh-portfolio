@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Send, CheckCircle, AlertCircle, Mail, Phone, MapPin, Github, Linkedin, ChevronDown, Check, Download, ExternalLink } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Mail, MapPin, Github, Linkedin, ChevronDown, Check, Download, ExternalLink, Zap } from 'lucide-react';
 import { PERSONAL } from '@/lib/constants';
 import { fadeUp, slideLeft, slideRight } from '@/lib/animations';
 import type { ContactFormData } from '@/types';
@@ -208,47 +208,102 @@ export function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Left — Info */}
-          <motion.div variants={slideLeft} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="space-y-6">
-            {[
-              { icon: Mail, label: PERSONAL.email, href: `mailto:${PERSONAL.email}`, action: copyEmail, actionLabel: copied ? '✓ Copied!' : 'Copy' },
-              { icon: Phone, label: PERSONAL.phone, href: `tel:${PERSONAL.phone}` },
-              { icon: MapPin, label: 'Punjab, India', href: null },
-            ].map(({ icon: Icon, label, href, action, actionLabel }) => (
+          <motion.div variants={slideLeft} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="space-y-4">
+            {/* Email */}
+            <div
+              className="flex items-center gap-4 p-4 rounded-xl"
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
+            >
               <div
-                key={label}
-                className="flex items-center gap-4 p-4 rounded-xl"
-                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(0,245,255,0.10)', border: '1px solid rgba(0,245,255,0.20)' }}
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(0,245,255,0.10)', border: '1px solid rgba(0,245,255,0.20)' }}
-                >
-                  <Icon size={16} style={{ color: 'var(--accent-cyan)' }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  {href ? (
-                    <a href={href} className="text-sm truncate block transition-colors"
-                      style={{ color: 'var(--text-primary)' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent-cyan)')}
-                      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-                    >
-                      {label}
-                    </a>
-                  ) : (
-                    <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{label}</span>
-                  )}
-                </div>
-                {action && (
-                  <button
-                    onClick={action}
-                    className="text-xs font-outfit px-2 py-1 rounded-md transition-colors"
-                    style={{ color: 'var(--accent-cyan)', background: 'rgba(0,245,255,0.1)' }}
-                  >
-                    {actionLabel}
-                  </button>
-                )}
+                <Mail size={16} style={{ color: 'var(--accent-cyan)' }} />
               </div>
-            ))}
+              <div className="flex-1 min-w-0">
+                <a
+                  href={`mailto:${PERSONAL.email}`}
+                  className="text-sm truncate block transition-colors"
+                  style={{ color: 'var(--text-primary)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent-cyan)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+                >
+                  {PERSONAL.email}
+                </a>
+              </div>
+              <button
+                onClick={copyEmail}
+                className="text-xs font-outfit px-2 py-1 rounded-md transition-colors flex-shrink-0"
+                style={{ color: 'var(--accent-cyan)', background: 'rgba(0,245,255,0.1)' }}
+              >
+                {copied ? '✓ Copied!' : 'Copy'}
+              </button>
+            </div>
+
+            {/* Location */}
+            <div
+              className="flex items-center gap-4 p-4 rounded-xl"
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
+            >
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(0,245,255,0.10)', border: '1px solid rgba(0,245,255,0.20)' }}
+              >
+                <MapPin size={16} style={{ color: 'var(--accent-cyan)' }} />
+              </div>
+              <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Punjab, India</span>
+            </div>
+
+            {/* Status card */}
+            <motion.div
+              className="flex items-center gap-4 p-4 rounded-xl relative overflow-hidden"
+              style={{
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border-accent)',
+              }}
+              whileHover={{ boxShadow: 'var(--glow-card-hover)' }}
+            >
+              {/* Subtle animated glow sweep */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(0,245,255,0.04), transparent)',
+                  backgroundSize: '200% 100%',
+                }}
+                animate={{ backgroundPosition: ['-100% 0', '200% 0'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+              />
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 relative z-10"
+                style={{ background: 'rgba(0,245,255,0.12)', border: '1px solid rgba(0,245,255,0.30)' }}
+              >
+                <Zap size={16} style={{ color: 'var(--accent-cyan)' }} />
+              </div>
+              <div className="relative z-10">
+                <p className="text-xs font-outfit font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--accent-cyan)' }}>
+                  Status
+                </p>
+                <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                  Open to Opportunities
+                </p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                  Internships · Collabs · AI Projects
+                </p>
+              </div>
+              {/* Live pulse dot */}
+              <div className="ml-auto relative z-10 flex-shrink-0">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span
+                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
+                    style={{ background: 'var(--accent-cyan)' }}
+                  />
+                  <span
+                    className="relative inline-flex rounded-full h-2.5 w-2.5"
+                    style={{ background: 'var(--accent-cyan)' }}
+                  />
+                </span>
+              </div>
+            </motion.div>
 
             {/* Social links */}
             <div className="flex gap-3 pt-2">

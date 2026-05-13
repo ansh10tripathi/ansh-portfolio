@@ -1,7 +1,14 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 import { PERSONAL, NAV_ITEMS } from '@/lib/constants';
+
+const SOCIALS = [
+  { href: PERSONAL.github,            icon: Github,   label: 'GitHub'   },
+  { href: PERSONAL.linkedin,          icon: Linkedin, label: 'LinkedIn' },
+  { href: `mailto:${PERSONAL.email}`, icon: Mail,     label: 'Email'    },
+];
 
 export function Footer() {
   const scrollTo = (href: string) => {
@@ -9,88 +16,95 @@ export function Footer() {
   };
 
   return (
-    <footer
-      className="relative overflow-hidden"
-      style={{ background: 'var(--bg-elevated)', borderTop: '1px solid var(--border-subtle)' }}
-    >
-      {/* Top gradient border */}
+    <footer className="relative overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+      {/* Neon hairline */}
       <div
-        className="absolute top-0 left-0 right-0 h-px"
+        className="absolute top-0 left-0 right-0 h-px pointer-events-none"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-violet), transparent)' }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
-          <div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+          {/* Brand — spans 2 cols on lg */}
+          <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center font-syne font-bold text-lg"
+              <motion.div
+                className="w-9 h-9 rounded-xl flex items-center justify-center font-syne font-bold text-base flex-shrink-0"
                 style={{
                   background: 'linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.15))',
                   border: '1px solid var(--border-accent)',
                 }}
+                whileHover={{ rotate: 5, scale: 1.05 }}
               >
                 <span className="gradient-text">AT</span>
+              </motion.div>
+              <div>
+                <p className="font-syne font-bold text-sm leading-tight" style={{ color: 'var(--text-primary)' }}>
+                  Ansh Tripathi
+                </p>
+                <p className="text-[11px] font-jetbrains" style={{ color: 'var(--accent-cyan)' }}>
+                  AI/ML · Full Stack · Systems
+                </p>
               </div>
-              <span className="font-syne font-bold text-lg" style={{ color: 'var(--text-primary)' }}>
-                Ansh Tripathi
-              </span>
             </div>
-            <p className="text-sm max-w-xs" style={{ color: 'var(--text-muted)' }}>
-              AI/ML Engineer · Full Stack Developer · Building at the intersection of ML and modern web.
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-muted)' }}>
+              Building intelligent systems, scalable software, and immersive web experiences.
             </p>
           </div>
 
-          {/* Quick Nav */}
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-outfit font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--text-muted)' }}>
+          {/* Navigation */}
+          <div>
+            <p className="text-[10px] font-outfit font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-muted)' }}>
               Navigation
             </p>
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => scrollTo(item.href)}
-                className="text-sm text-left w-fit transition-colors duration-200"
-                style={{ color: 'var(--text-muted)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent-cyan)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
-              >
-                {item.label}
-              </button>
-            ))}
+            <ul className="space-y-2">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <button
+                    onClick={() => scrollTo(item.href)}
+                    className="group flex items-center gap-1.5 text-sm transition-colors duration-200 w-fit"
+                    style={{ color: 'var(--text-muted)' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent-cyan)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+                  >
+                    <span
+                      className="w-1 h-1 rounded-full flex-shrink-0 transition-all duration-200 group-hover:w-3"
+                      style={{ background: 'var(--accent-cyan)', opacity: 0.5 }}
+                    />
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Social */}
+          {/* Connect */}
           <div>
-            <p className="text-xs font-outfit font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-muted)' }}>
-              Connect
+            <p className="text-[10px] font-outfit font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-muted)' }}>
+              Let&apos;s Connect
             </p>
-            <div className="flex gap-3">
-              {[
-                { href: PERSONAL.github, icon: Github, label: 'GitHub' },
-                { href: PERSONAL.linkedin, icon: Linkedin, label: 'LinkedIn' },
-                { href: `mailto:${PERSONAL.email}`, icon: Mail, label: 'Email' },
-              ].map(({ href, icon: Icon, label }) => (
-                <a
+            <div className="flex flex-col gap-1.5">
+              {SOCIALS.map(({ href, icon: Icon, label }) => (
+                <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
-                  style={{ border: '1px solid var(--border-card)', background: 'var(--bg-card)', color: 'var(--text-muted)' }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.color = 'var(--accent-cyan)';
-                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)';
+                  className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-sm font-outfit w-fit"
+                  style={{ color: 'var(--text-muted)', border: '1px solid transparent' }}
+                  whileHover={{
+                    color: 'var(--accent-cyan)',
+                    borderColor: 'var(--border-accent)',
+                    background: 'var(--bg-card)',
+                    x: 3,
                   }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)';
-                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-card)';
-                  }}
+                  transition={{ duration: 0.15 }}
                 >
-                  <Icon size={16} />
-                </a>
+                  <Icon size={14} />
+                  {label}
+                </motion.a>
               ))}
             </div>
           </div>
@@ -98,13 +112,14 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs"
+          className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs"
           style={{ borderTop: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}
         >
           <span className="flex items-center gap-1">
-            Built with <Heart size={12} className="text-[#F43F5E] mx-1" fill="currentColor" /> by Ansh Tripathi · 2026
+            Built with <Heart size={11} className="mx-1" style={{ color: 'var(--accent-rose)' }} fill="currentColor" />
+            by Ansh Tripathi · 2026
           </span>
-          <span>Open Source — MIT License</span>
+          <span style={{ opacity: 0.55 }}>MIT License · Open Source</span>
         </div>
       </div>
     </footer>
