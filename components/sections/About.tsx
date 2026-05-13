@@ -23,61 +23,59 @@ const INTERESTS = [
   { icon: '🏃', label: 'Athletics' },
 ];
 
-/** About section with terminal card and animated stats */
 export function About() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section id="about" className="section-padding relative overflow-hidden">
+    <section id="about" className="section-padding relative overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
+        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-center">
 
           {/* Left — 3/5 */}
           <motion.div
             variants={slideLeft}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="lg:col-span-3"
+            className="lg:col-span-3 order-2 lg:order-1"
           >
             <p className="section-label mb-3">&lt; About Me /&gt;</p>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl mb-6 text-[var(--text-primary)]">
+            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl mb-6" style={{ color: 'var(--text-primary)' }}>
               The Mind Behind{' '}
               <span className="gradient-text">the Machine</span>
             </h2>
 
-            <div className="space-y-4 text-[var(--text-secondary)] leading-relaxed">
+            <div className="space-y-4 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               <p>
-                I&apos;m <span className="text-[var(--text-primary)] font-medium">Ansh Tripathi</span>, a B.Tech CSE (AI/ML) student at Lovely Professional University with a deep passion for building systems that think. I work at the intersection of machine learning algorithms, real-time computing, and modern web engineering.
+                I&apos;m <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Ansh Tripathi</span>, a B.Tech CSE (AI/ML) student at Lovely Professional University with a deep passion for building systems that think. I work at the intersection of machine learning algorithms, real-time computing, and modern web engineering.
               </p>
               <p>
                 Currently pursuing my degree with a{' '}
-                <span className="text-[#00F5FF] font-medium">LPUNEST Category 1 Scholarship</span> (top merit tier, 30% tuition waiver), I focus on translating complex ML concepts into production-grade software — from bio-inspired optimization algorithms to real-time bidding engines.
+                <span style={{ color: 'var(--accent-cyan)', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  LPUNEST Category 1 Scholarship
+                </span>{' '}
+                (top merit tier, 30% tuition waiver), I focus on translating complex ML concepts into production-grade software — from bio-inspired optimization algorithms to real-time bidding engines.
               </p>
               <p>
                 Beyond code, I&apos;m a{' '}
-                <span className="text-[#10B981] font-medium">district-level athlete</span> — competing in Shot Put, Javelin, Volleyball, and Football. I believe the same discipline that wins on the field drives engineering excellence.
+                <span style={{ color: 'var(--accent-emerald)', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  district-level athlete
+                </span>{' '}
+                — competing in Shot Put, Javelin, Volleyball, and Football. I believe the same discipline that wins on the field drives engineering excellence.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+            <div className="grid grid-cols-2 gap-4 mt-8">
               {STATS.map((stat) => (
                 <div
                   key={stat.label}
                   className="rounded-xl p-4 text-center"
-                  style={{
-                    background: 'rgba(0,245,255,0.04)',
-                    border: '1px solid rgba(0,245,255,0.1)',
-                  }}
+                  style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 >
-                  <div className="font-syne font-bold text-2xl sm:text-3xl gradient-text">
-                    <CounterAnim
-                      target={stat.value}
-                      suffix={stat.suffix}
-                      decimals={stat.decimals ?? 0}
-                    />
+                  <div className="font-syne font-bold text-2xl sm:text-3xl" style={{ color: 'var(--accent-cyan)' }}>
+                    <CounterAnim target={stat.value} suffix={stat.suffix} decimals={stat.decimals ?? 0} />
                   </div>
-                  <div className="text-xs text-[var(--text-muted)] mt-1 font-outfit">{stat.label}</div>
+                  <div className="text-xs mt-1 font-outfit" style={{ color: 'var(--text-muted)' }}>{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -88,7 +86,7 @@ export function About() {
             variants={slideRight}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="lg:col-span-2 space-y-4"
+            className="lg:col-span-2 space-y-4 order-1 lg:order-2"
           >
             <TerminalText />
 
@@ -97,11 +95,11 @@ export function About() {
               {INTERESTS.map((item) => (
                 <motion.span
                   key={item.label}
-                  whileHover={{ scale: 1.05, borderColor: 'rgba(0,245,255,0.4)' }}
+                  whileHover={{ scale: 1.05, borderColor: 'var(--border-accent)' }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-outfit transition-all duration-200"
                   style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: 'var(--bg-glass)',
+                    border: '1px solid var(--border-subtle)',
                     color: 'var(--text-secondary)',
                   }}
                 >

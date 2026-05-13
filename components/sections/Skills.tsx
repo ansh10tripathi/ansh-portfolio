@@ -1,180 +1,244 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { SKILLS } from '@/lib/constants';
-import type { Skill } from '@/types';
-import { staggerContainer, fadeUp } from '@/lib/animations';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { fadeUp } from '@/lib/animations';
 
 const TABS = [
-  { key: 'languages', label: 'Languages' },
-  { key: 'ml', label: 'ML & Data Science' },
-  { key: 'web', label: 'Web & Frameworks' },
-  { key: 'tools', label: 'Tools' },
+  { key: 'languages',  label: 'Languages',          accent: 'var(--accent-cyan)'    },
+  { key: 'ml',         label: 'ML & Data Science',  accent: 'var(--accent-emerald)' },
+  { key: 'web',        label: 'Web & Frameworks',   accent: 'var(--accent-violet)'  },
+  { key: 'tools',      label: 'Tools & Databases',  accent: 'var(--accent-amber)'   },
 ] as const;
 
-const CORE_CONCEPTS = [
-  'Data Structures & Algorithms', 'OOP', 'Operating Systems', 'DBMS',
-  'RESTful APIs', 'Real-Time Systems', 'Discrete Mathematics',
-];
+type TabKey = typeof TABS[number]['key'];
 
-const SKILL_ICONS: Record<string, string> = {
-  python: '🐍', cplusplus: '⚡', javascript: '🟨', typescript: '🔷',
-  java: '☕', c: '🔵', numpy: '🔢', pandas: '🐼', scikitlearn: '🤖',
-  matplotlib: '📊', jupyter: '📓', googlecolab: '🔬', react: '⚛️',
-  nextdotjs: '▲', tailwindcss: '🎨', flask: '🌶️', fastapi: '⚡',
-  html5: '🌐', git: '🌿', github: '🐙', postgresql: '🐘',
-  vscode: '💙', linux: '🐧',
+const SKILL_DATA: Record<TabKey, { name: string; icon: string; level: number }[]> = {
+  languages: [
+    { name: 'Python',     icon: 'python',     level: 90 },
+    { name: 'C++',        icon: 'cplusplus',  level: 82 },
+    { name: 'JavaScript', icon: 'javascript', level: 80 },
+    { name: 'TypeScript', icon: 'typescript', level: 72 },
+    { name: 'Java',       icon: 'java',       level: 70 },
+    { name: 'C',          icon: 'c',          level: 75 },
+  ],
+  ml: [
+    { name: 'NumPy',        icon: 'numpy',       level: 88 },
+    { name: 'Pandas',       icon: 'pandas',      level: 85 },
+    { name: 'Scikit-learn', icon: 'scikitlearn', level: 78 },
+    { name: 'Matplotlib',   icon: 'matplotlib',  level: 82 },
+    { name: 'Jupyter',      icon: 'jupyter',     level: 88 },
+    { name: 'Google Colab', icon: 'googlecolab', level: 85 },
+  ],
+  web: [
+    { name: 'React',      icon: 'react',      level: 82 },
+    { name: 'TailwindCSS',icon: 'tailwindcss',level: 88 },
+    { name: 'Flask',      icon: 'flask',      level: 75 },
+    { name: 'FastAPI',    icon: 'fastapi',    level: 72 },
+    { name: 'HTML/CSS',   icon: 'html5',      level: 90 },
+    { name: 'Next.js',    icon: 'nextjs',     level: 70 },
+  ],
+  tools: [
+    { name: 'Git',        icon: 'git',        level: 85 },
+    { name: 'GitHub',     icon: 'github',     level: 90 },
+    { name: 'PostgreSQL', icon: 'postgresql', level: 72 },
+    { name: 'VS Code',    icon: 'vscode',     level: 92 },
+    { name: 'Linux',      icon: 'linux',      level: 70 },
+  ],
 };
 
-function SkillArc({ skill, inView }: { skill: Skill; inView: boolean }) {
-  const size = 80;
-  const strokeWidth = 5;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (skill.level / 100) * circumference;
+const ICON_VARIANT: Record<string, string> = {
+  javascript: 'plain', typescript: 'plain', cplusplus: 'plain', c: 'plain',
+  nextjs: 'plain', flask: 'original', fastapi: 'plain', googlecolab: 'plain',
+  scikitlearn: 'plain', matplotlib: 'plain', vscode: 'plain', github: 'original',
+};
+
+function deviconUrl(icon: string) {
+  const variant = ICON_VARIANT[icon] ?? 'original';
+  return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-${variant}.svg`;
+}
+
+const CORE_CONCEPTS = [
+  'Data Structures & Algorithms', 'OOP', 'Operating Systems',
+  'DBMS', 'RESTful APIs', 'Real-Time Systems', 'Discrete Mathematics',
+];
+
+function useCounter(target: number, active: boolean, duration = 1200) {
+  const [count, setCount] = useState(0);
+  const raf = useRef<number>(0);
+  useEffect(() => {
+    if (!active) { setCount(0); return; }
+    const start = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / duration, 1);
+      setCount(Math.round(p * target));
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf.current);
+  }, [target, active, duration]);
+  return count;
+}
+
+const SIZE = 48;
+const SW   = 4;
+const R    = (SIZE - SW) / 2;
+const CIRC = 2 * Math.PI * R;
+
+function SkillCard({ skill, accent, animate }: {
+  skill: { name: string; icon: string; level: number };
+  accent: string;
+  animate: boolean;
+}) {
+  const offset = CIRC - (skill.level / 100) * CIRC;
+  const count  = useCounter(skill.level, animate);
+  const [imgErr, setImgErr] = useState(false);
+  useEffect(() => setImgErr(false), [skill.icon]);
 
   return (
     <motion.div
       variants={fadeUp}
-      className="flex flex-col items-center gap-3 p-4 rounded-xl transition-all duration-200 group"
-      style={{
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.05)',
-      }}
-      whileHover={{
-        background: 'rgba(0,245,255,0.04)',
-        borderColor: 'rgba(0,245,255,0.2)',
-        y: -2,
-      }}
+      className="flex flex-col items-center gap-2.5 p-4 rounded-xl cursor-default transition-all duration-150"
+      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
+      whileHover={{ borderColor: 'var(--border-accent)', boxShadow: 'var(--glow-card-hover)', y: -3 }}
     >
-      {/* Arc */}
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="-rotate-90">
-          <circle
-            cx={size / 2} cy={size / 2} r={radius}
-            fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth}
-          />
+      <div className="relative" style={{ width: SIZE, height: SIZE }}>
+        <svg width={SIZE} height={SIZE} style={{ transform: 'rotate(-90deg)' }}>
+          <circle cx={SIZE/2} cy={SIZE/2} r={R} fill="none" stroke="var(--border-subtle)" strokeWidth={SW} />
           <motion.circle
-            cx={size / 2} cy={size / 2} r={radius}
-            fill="none"
-            stroke="url(#skillGrad)"
-            strokeWidth={strokeWidth}
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            initial={{ strokeDashoffset: circumference }}
-            animate={inView ? { strokeDashoffset: offset } : { strokeDashoffset: circumference }}
-            transition={{ duration: 1.2, ease: 'easeInOut', delay: 0.1 }}
+            cx={SIZE/2} cy={SIZE/2} r={R}
+            fill="none" stroke={accent} strokeWidth={SW} strokeLinecap="round"
+            strokeDasharray={CIRC}
+            initial={{ strokeDashoffset: CIRC }}
+            animate={{ strokeDashoffset: animate ? offset : CIRC }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
           />
-          <defs>
-            <linearGradient id="skillGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#00F5FF" />
-              <stop offset="100%" stopColor="#7C3AED" />
-            </linearGradient>
-          </defs>
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl">{SKILL_ICONS[skill.icon] ?? '💡'}</span>
+          {!imgErr ? (
+            <img src={deviconUrl(skill.icon)} alt={skill.name} width={22} height={22}
+              style={{ objectFit: 'contain' }} onError={() => setImgErr(true)} />
+          ) : (
+            <span className="font-mono font-bold" style={{ fontSize: '10px', color: accent }}>
+              {skill.name.slice(0, 3).toUpperCase()}
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="text-center">
-        <p className="text-sm font-outfit font-medium text-[var(--text-primary)]">{skill.name}</p>
-        <p className="text-xs text-[#00F5FF] font-mono mt-0.5">{skill.level}%</p>
-      </div>
+      <p className="font-outfit text-center leading-tight" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+        {skill.name}
+      </p>
+      <p className="font-mono font-bold" style={{ fontSize: '12px', color: accent }}>
+        {count}%
+      </p>
     </motion.div>
   );
 }
 
-/** Interactive skills section with tab system and animated arcs */
 export function Skills() {
-  const [activeTab, setActiveTab] = useState<typeof TABS[number]['key']>('languages');
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const tabRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<TabKey>('languages');
+  const [prevTab,   setPrevTab]   = useState<TabKey>('languages');
+  const [arcActive, setArcActive] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const tabKeys = TABS.map(t => t.key);
+  const direction = tabKeys.indexOf(activeTab) >= tabKeys.indexOf(prevTab) ? 1 : -1;
 
-  const skills = SKILLS[activeTab];
+  const switchTab = (key: TabKey) => {
+    if (key === activeTab) return;
+    setPrevTab(activeTab);
+    setArcActive(false);
+    setActiveTab(key);
+  };
+
+  useEffect(() => {
+    if (!inView) return;
+    const t = setTimeout(() => setArcActive(true), 80);
+    return () => clearTimeout(t);
+  }, [activeTab, inView]);
+
+  const accent = TABS.find(t => t.key === activeTab)!.accent;
 
   return (
-    <section id="skills" className="section-padding relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={ref}>
-          {/* Header */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? 'visible' : 'hidden'}
-            className="text-center mb-12"
-          >
+    <section id="skills" className="section-padding relative" style={{ background: 'var(--bg-base)' }}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div ref={sectionRef}>
+          <motion.div variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} className="text-center mb-12">
             <p className="section-label mb-3">&lt; Skills /&gt;</p>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl text-[var(--text-primary)]">
+            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--text-primary)' }}>
               Technical <span className="gradient-text">Arsenal</span>
             </h2>
           </motion.div>
 
           {/* Tabs */}
-          <div ref={tabRef} className="flex flex-wrap justify-center gap-2 mb-10">
-            {TABS.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className="relative px-5 py-2.5 rounded-full text-sm font-outfit font-medium transition-all duration-200"
-                style={{
-                  color: activeTab === tab.key ? '#00F5FF' : 'var(--text-secondary)',
-                  background: activeTab === tab.key ? 'rgba(0,245,255,0.1)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${activeTab === tab.key ? 'rgba(0,245,255,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                }}
-              >
-                {tab.label}
-                {activeTab === tab.key && (
-                  <motion.div
-                    layoutId="tab-indicator"
-                    className="absolute inset-0 rounded-full"
-                    style={{ background: 'rgba(0,245,255,0.05)' }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
+          <div className="skills-tabs-scroll flex justify-start sm:justify-center gap-1 mb-10 relative px-1">
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => switchTab(tab.key)}
+                  className="relative px-5 py-2 rounded-t-lg transition-colors duration-200"
+                  style={{
+                    fontFamily: 'var(--font-outfit), sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: isActive ? tab.accent : 'var(--text-muted)',
+                    background: 'transparent',
+                    border: 'none',
+                  }}
+                >
+                  {tab.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="tab-underline"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                      style={{ background: tab.accent }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+            <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'var(--border-subtle)' }} />
           </div>
 
-          {/* Skills Grid */}
-          <AnimatePresence mode="wait">
+          {/* Skills grid */}
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={activeTab}
-              variants={staggerContainer}
+              custom={direction}
+              variants={{
+                hidden:  (d: number) => ({ opacity: 0, x: d * 40 }),
+                visible: { opacity: 1, x: 0, transition: { duration: 0.28, ease: 'easeOut', staggerChildren: 0.05 } },
+                exit:    (d: number) => ({ opacity: 0, x: d * -40, transition: { duration: 0.2, ease: 'easeIn' } }),
+              }}
               initial="hidden"
               animate="visible"
-              exit={{ opacity: 0, x: -20 }}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"
+              exit="exit"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3"
             >
-              {skills.map((skill) => (
-                <SkillArc key={skill.name} skill={skill} inView={inView} />
+              {SKILL_DATA[activeTab].map((skill) => (
+                <SkillCard key={skill.name} skill={skill} accent={accent} animate={arcActive} />
               ))}
             </motion.div>
           </AnimatePresence>
 
-          {/* Core Concepts */}
+          {/* Core CS Concepts */}
           <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? 'visible' : 'hidden'}
-            transition={{ delay: 0.4 }}
+            variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'} transition={{ delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-xs font-outfit font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-4">
+            <p className="text-xs font-outfit font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--text-muted)' }}>
               Core CS Concepts
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {CORE_CONCEPTS.map((concept) => (
                 <span
                   key={concept}
-                  className="px-3 py-1.5 rounded-full text-sm font-outfit"
-                  style={{
-                    background: 'rgba(124,58,237,0.08)',
-                    border: '1px solid rgba(124,58,237,0.2)',
-                    color: 'var(--text-secondary)',
-                  }}
+                  className="px-3 py-1 rounded-full text-xs font-outfit"
+                  style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
                 >
                   {concept}
                 </span>
