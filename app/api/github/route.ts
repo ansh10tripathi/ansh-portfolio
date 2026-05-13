@@ -2,15 +2,16 @@ import { NextResponse } from 'next/server';
 import { fetchGitHubStats } from '@/lib/github';
 import { GITHUB_FALLBACK } from '@/lib/constants';
 
-/** GitHub stats API proxy with 1-hour cache */
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const stats = await fetchGitHubStats();
     return NextResponse.json(stats, {
-      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
+      headers: { 'Cache-Control': 'no-store' },
     });
   } catch (err) {
-    // Return static fallback so the UI never breaks — avoids 500 on rate-limit or network issues
     console.error('[/api/github]', err instanceof Error ? err.message : err);
     return NextResponse.json(
       {

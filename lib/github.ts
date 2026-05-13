@@ -10,8 +10,8 @@ export async function fetchGitHubStats(): Promise<GitHubStats> {
   }
 
   const [userRes, reposRes] = await Promise.all([
-    fetch(`${GITHUB_API}/users/${USERNAME}`, { headers, next: { revalidate: 3600 } }),
-    fetch(`${GITHUB_API}/users/${USERNAME}/repos?per_page=100&sort=updated`, { headers, next: { revalidate: 3600 } }),
+    fetch(`${GITHUB_API}/users/${USERNAME}`, { headers, cache: 'no-store' }),
+    fetch(`${GITHUB_API}/users/${USERNAME}/repos?per_page=100&sort=updated`, { headers, cache: 'no-store' }),
   ]);
 
   if (!userRes.ok || !reposRes.ok) {
