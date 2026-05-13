@@ -1,49 +1,49 @@
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { About } from '@/components/sections/About';
-import { Skills } from '@/components/sections/Skills';
-import { Projects } from '@/components/sections/Projects';
-import { GitHubStats } from '@/components/sections/GitHubStats';
-import { Experience } from '@/components/sections/Experience';
-import { Certifications } from '@/components/sections/Certifications';
-import { Achievements } from '@/components/sections/Achievements';
-import { Contact } from '@/components/sections/Contact';
-import { Resume } from '@/components/sections/Resume';
-import { ScrollProgress } from '@/components/ui/ScrollProgress';
-import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { SectionDivider } from '@/components/ui/SectionDivider';
 
-/** Main page — orchestrates all sections */
+// Lazy-load all below-fold sections — zero impact on initial render
+const About         = dynamic(() => import('@/components/sections/About').then(m => ({ default: m.About })));
+const Skills        = dynamic(() => import('@/components/sections/Skills').then(m => ({ default: m.Skills })));
+const Projects      = dynamic(() => import('@/components/sections/Projects').then(m => ({ default: m.Projects })));
+const GitHubStats   = dynamic(() => import('@/components/sections/GitHubStats').then(m => ({ default: m.GitHubStats })));
+const Experience    = dynamic(() => import('@/components/sections/Experience').then(m => ({ default: m.Experience })));
+const Certifications = dynamic(() => import('@/components/sections/Certifications').then(m => ({ default: m.Certifications })));
+const Achievements  = dynamic(() => import('@/components/sections/Achievements').then(m => ({ default: m.Achievements })));
+const Contact       = dynamic(() => import('@/components/sections/Contact').then(m => ({ default: m.Contact })));
+
+/** Minimal section skeleton shown while lazy chunks load */
+function SectionSkeleton() {
+  return <div className="section-padding" aria-hidden />;
+}
+
 export default function Home() {
   return (
     <>
-      <LoadingScreen />
-      <ScrollProgress />
       <Navbar />
 
-      <main>
+      <main id="main-content">
         <Hero />
+        <SectionDivider />
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<SectionSkeleton />}>
           <About />
+          <SectionDivider />
           <Skills />
+          <SectionDivider />
           <Projects />
+          <SectionDivider />
           <GitHubStats />
+          <SectionDivider />
           <Experience />
+          <SectionDivider />
           <Certifications />
-          {/* Section divider */}
-          <div
-            aria-hidden
-            style={{
-              height: '1px',
-              margin: '0 auto',
-              maxWidth: '80rem',
-              background: 'linear-gradient(90deg, transparent, #00F5FF40, transparent)',
-            }}
-          />
+          <SectionDivider />
           <Achievements />
-          <Resume />
+          <SectionDivider />
           <Contact />
         </Suspense>
       </main>

@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Download } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { NAV_ITEMS, PERSONAL } from '@/lib/constants';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 
-/** Sticky navigation with blur, active section detection, and mobile menu */
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
@@ -21,23 +21,15 @@ export function Navbar() {
   useEffect(() => {
     const ids = NAV_ITEMS.map((item) => item.href.replace('#', ''));
     const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
       { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
     );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
+    ids.forEach((id) => { const el = document.getElementById(id); if (el) obs.observe(el); });
     return () => obs.disconnect();
   }, []);
 
   const scrollTo = (href: string) => {
-    const id = href.replace('#', '');
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
     setMobileOpen(false);
   };
 
@@ -47,25 +39,23 @@ export function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'backdrop-blur-xl bg-[var(--bg-primary)]/80 border-b border-white/5 shadow-lg shadow-black/20'
-            : 'bg-transparent'
-        }`}
+        style={scrolled ? {
+          background: 'var(--bg-nav)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid var(--border-subtle)',
+        } : { background: 'transparent' }}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <button
-              onClick={() => scrollTo('#hero')}
-              className="relative group"
-              aria-label="Scroll to top"
-            >
+            <button onClick={() => scrollTo('#hero')} className="relative group" aria-label="Scroll to top">
               <motion.div
-                className="w-10 h-10 rounded-xl flex items-center justify-center font-syne font-bold text-lg animate-pulse-glow"
+                className="w-10 h-10 rounded-xl flex items-center justify-center font-syne font-bold text-lg"
                 style={{
                   background: 'linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.15))',
-                  border: '1px solid rgba(0,245,255,0.3)',
+                  border: '1px solid var(--border-accent)',
                 }}
                 whileHover={{ rotate: 5, scale: 1.05 }}
               >
@@ -81,16 +71,13 @@ export function Navbar() {
                   <button
                     key={item.href}
                     onClick={() => scrollTo(item.href)}
-                    className="relative px-4 py-2 text-sm font-outfit font-medium transition-colors duration-200"
-                    style={{ color: isActive ? '#00F5FF' : 'var(--text-secondary)' }}
+                    className="nav-link relative px-4 py-2 text-sm font-outfit font-medium transition-colors duration-200"
+                    style={{ color: isActive ? 'var(--accent-cyan)' : 'var(--text-secondary)' }}
                   >
                     {item.label}
                     <span
                       className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-opacity duration-300"
-                      style={{
-                        background: 'linear-gradient(90deg, #00F5FF, #7C3AED)',
-                        opacity: isActive ? 1 : 0,
-                      }}
+                      style={{ background: 'var(--accent-cyan)', opacity: isActive ? 1 : 0 }}
                     />
                   </button>
                 );
@@ -100,24 +87,26 @@ export function Navbar() {
             {/* Right Actions */}
             <div className="flex items-center gap-3">
               <ThemeToggle />
-              <a
-                href="/resume/Ansh_Tripathi_Resume.pdf"
-                download
-                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-outfit font-medium transition-all duration-200 hover:scale-105"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.15))',
-                  border: '1px solid rgba(0,245,255,0.3)',
-                  color: '#00F5FF',
-                }}
-                data-cursor="download"
-              >
-                <Download size={14} />
-                Download CV
-              </a>
+              <MagneticButton className="hidden sm:inline-flex" data-cursor="download">
+                <a
+                  href="/resume/Ansh_Tripathi_Resume.pdf"
+                  download
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-outfit font-medium transition-[box-shadow] duration-300"
+                  style={{
+                    background: 'var(--grad-btn-primary)',
+                    color: 'var(--text-inverse)',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--glow-btn)')}
+                  onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+                >
+                  <Download size={14} />
+                  Download CV
+                </a>
+              </MagneticButton>
 
-              {/* Mobile hamburger */}
               <button
-                className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-white/10 bg-white/5"
+                className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg"
+                style={{ border: '1px solid var(--border-subtle)', background: 'var(--bg-glass)', color: 'var(--text-primary)' }}
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Toggle menu"
               >
@@ -128,7 +117,7 @@ export function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -136,7 +125,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 md:hidden"
-            style={{ background: 'rgba(5,5,8,0.97)', backdropFilter: 'blur(20px)' }}
+            style={{ background: 'var(--bg-nav)', backdropFilter: 'blur(20px)' }}
           >
             <div className="flex flex-col items-center justify-center h-full gap-6">
               {NAV_ITEMS.map((item, i) => (
@@ -146,8 +135,8 @@ export function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
                   onClick={() => scrollTo(item.href)}
-                  className="text-3xl font-syne font-bold transition-colors duration-200 hover:text-[#00F5FF]"
-                  style={{ color: activeSection === item.href.replace('#', '') ? '#00F5FF' : 'var(--text-primary)' }}
+                  className="text-3xl font-syne font-bold transition-colors duration-200"
+                  style={{ color: activeSection === item.href.replace('#', '') ? 'var(--accent-cyan)' : 'var(--text-primary)' }}
                 >
                   {item.label}
                 </motion.button>
@@ -160,9 +149,8 @@ export function Navbar() {
                 download
                 className="mt-4 flex items-center gap-2 px-6 py-3 rounded-xl text-base font-outfit font-medium"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.15))',
-                  border: '1px solid rgba(0,245,255,0.3)',
-                  color: '#00F5FF',
+                  background: 'var(--grad-btn-primary)',
+                  color: 'var(--text-inverse)',
                 }}
                 onClick={() => setMobileOpen(false)}
               >

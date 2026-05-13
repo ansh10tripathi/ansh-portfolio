@@ -3,11 +3,10 @@
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ReactNode } from 'react';
 
-/** Wraps the app with next-themes for dark/light mode support */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <NextThemesProvider
-      attribute="class"
+      attribute="data-theme"
       defaultTheme="dark"
       enableSystem
       disableTransitionOnChange={false}

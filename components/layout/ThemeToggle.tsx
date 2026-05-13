@@ -2,41 +2,65 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-/** Animated dark/light theme toggle */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-9 h-9" />;
+  if (!mounted) return <div style={{ width: 52, height: 28 }} />;
 
   const isDark = theme === 'dark';
 
   return (
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="relative w-9 h-9 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center hover:border-[#00F5FF]/40 transition-colors duration-200"
-      aria-label="Toggle theme"
-      data-cursor="theme"
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        width: 52,
+        height: 28,
+        borderRadius: 14,
+        padding: 3,
+        display: 'flex',
+        alignItems: 'center',
+        background: isDark
+          ? 'rgba(0, 245, 255, 0.15)'
+          : 'rgba(109, 40, 217, 0.12)',
+        border: isDark
+          ? '1px solid rgba(0, 245, 255, 0.30)'
+          : '1px solid rgba(109, 40, 217, 0.25)',
+        transition: 'background 0.3s ease, border-color 0.3s ease',
+        cursor: 'none',
+        flexShrink: 0,
+      }}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={theme}
-          initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-          animate={{ rotate: 0, opacity: 1, scale: 1 }}
-          exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.2 }}
-        >
-          {isDark ? (
-            <Sun size={16} className="text-[#F59E0B]" />
-          ) : (
-            <Moon size={16} className="text-[#7C3AED]" />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        layout
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        style={{
+          width: 22,
+          height: 22,
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 12,
+          marginLeft: isDark ? 0 : 'auto',
+          background: isDark ? '#00F5FF' : '#6D28D9',
+          boxShadow: isDark
+            ? '0 0 8px rgba(0, 245, 255, 0.6)'
+            : '0 0 8px rgba(109, 40, 217, 0.6)',
+          flexShrink: 0,
+        }}
+        whileHover={{
+          boxShadow: isDark
+            ? '0 0 12px rgba(0, 245, 255, 0.85)'
+            : '0 0 12px rgba(109, 40, 217, 0.85)',
+        }}
+      >
+        {isDark ? '🌙' : '☀️'}
+      </motion.div>
     </button>
   );
 }
